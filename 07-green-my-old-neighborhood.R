@@ -95,3 +95,28 @@ ggplot()+
   )+
   ggsave("output/07-green-my-neighborhood.png", type="cairo")
 
+
+#Version 2 - Using AI for Text and different crop.
+primary<-primary_sf%>%
+  st_intersection(hood_plus)
+
+ggplot()+
+  geom_sf(data = parks, color = "transparent", fill = "#2D2D2D", alpha = 0.8)+
+  geom_sf(data = residential, color = "#2D2D2D", size=0.2)+
+  geom_sf(data = tertiary, color = "#019214", alpha = 0.7)+
+  geom_sf(data = primary, color = "#019214", size = 0.8)+
+  coord_sf()+theme(
+    plot.title = element_text(family = "Public Sans Thin", size = 100, color = "#2D2D2D", margin=margin(0,0,0,0)),
+    plot.subtitle = element_text(family = "Public Sans Light", face = "plain",margin=margin(10,0,65,0), size = 12),
+    plot.caption = element_text(hjust = 1, margin=margin(35,0,0,0)),
+    panel.grid.major = element_line(color="transparent"),
+    panel.background = element_rect(fill = background_color, color = "transparent"),
+    plot.background = element_rect(fill = background_color, color = "transparent"),
+    axis.text = element_blank(),
+    plot.margin = unit(c(85, 100, 35, 100), "pt")
+  )+ggsave("output/07-green-my-neighborhoodV2.png", type="cairo")
+
+
+
+
+
