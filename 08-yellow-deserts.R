@@ -2,26 +2,34 @@ library(rnaturalearth)
 library(stars)
 library(tidyverse)
 library(schmidtytheme)
-library(raster)
 library(sf)
+library(raster)
+
 
 theme_set(theme_schmidt())
 
-veg<-read_stars("data/large_files/US_140EVT_2018/Grid/us_140evt.ovr")
+evt<-raster("data/large_files/Colorado_EVT/US_105EVT.tif")
 
-veg2<-raster("data/large_files/US_140EVT_2018/Grid/us_140evt.ovr")
+meta<-read_csv("data/large_files/Colorado_EVT/LF_140EVT_09152016.csv")
 
+meta%>%
+  count(EVT_PHYS)%>%
+  View()
 
-poly<-st_read("data/large_files/US_140EVT_2018/Spatial_Metadata/US_140_SPATPLYGN.shp")
+desert_potential<-meta%>%
+  filter(EVT_PHYS %in% c("Shrubland", "Conifer", "Grassland"))%>%
+  pull(VALUE)
 
-meta<-read_csv("data/large_files/US_140EVT_2018/CSV_Data/LF_140EVT_09152016.csv")
+points<-evt%>%
+  rasterToPoints()
 
-meta
+points<-points%>%
+  as_tibble()%>%
+  rename(value=3)
 
+points_filtered<-points%>%
+  filter(value %in% desert_potential)
 
-
-
-
-plot(veg2)
-
+point_joined<-points%>%
+  left_join(meta, by=c("value"="VALUE"))
 

@@ -11,7 +11,7 @@ theme_set(theme_schmidt()+
 
 #Explore the OSM data
 available_features()
-available_tags("highway")
+available_tags("natural")
 
 
 # Query each Layer
